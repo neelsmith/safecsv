@@ -23,6 +23,23 @@ class TestBasic extends GroovyTestCase {
     assert cols.size() == 3
   }
 
-  
+
+  void testQuoted() {
+    String quoted = '  col1,"col2",col3'
+    SafeCsvReader safecsv = new SafeCsvReader(new File("/dev/null"))
+    ArrayList cols = safecsv.parseLine(quoted)
+    assert cols.size() == 3
+  }
+
+  void testQuotedComman() {
+    String quoted = '  first column,"column with internal comma,",trailer '
+    SafeCsvReader safecsv = new SafeCsvReader(new File("/dev/null"))
+    ArrayList cols = safecsv.parseLine(quoted)
+    assert cols.size() == 3
+    assert cols[0] == "first column"
+    assert cols[1] == "column with internal comma,"
+    assert cols[2] == "trailer"
+    
+  }
  
 }

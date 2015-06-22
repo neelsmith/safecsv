@@ -3,7 +3,8 @@ package edu.holycross.shot.safecsv
 class SafeCsvReader {
 
 
-  String delimiter = ","
+  String columnDelimiter = ","
+  String quotation = '"'
   
   File srcFile
   
@@ -67,24 +68,20 @@ class SafeCsvReader {
       int cp = ln.codePointAt(idx)
       String charAsStr =  new String(Character.toChars(cp))
 
-      if (charAsStr == delimiter) {
-	valuesByColumn.add(columnValue.toString())
-	columnValue.setLength(0)
+
+      if  (charAsStr == quotation) {
+	inQuoted = !inQuoted
+	
+      } else  if ((charAsStr == columnDelimiter) && (!inQuoted)) {
+	if (columnValue.size() > 0) {
+	  valuesByColumn.add(columnValue.toString())
+	  columnValue.setLength(0)
+	}
+	
       } else {
 	columnValue.append(charAsStr)
       }
       
-      /*
-      if ((!inQuoted ) && (charAsStr ==~ '"')) {
-	inQuoted = true
-      } else if ((charAsStr == ",") && (! inQuoted)) {
-	// END COLUMN
-	valuesByColumn.add(columnValue)
-      } else if (charAsStr == '"') && (inQuoted) {
-	  
-      } else {
-      }
-      */
      }
      valuesByColumn.add(columnValue.toString())
     return valuesByColumn    
