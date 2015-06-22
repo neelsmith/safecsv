@@ -1,0 +1,168 @@
+apply plugin: "base"
+apply plugin:  "groovy"
+apply plugin:  "maven"
+
+apply from: "versions.gradle"
+
+
+group = "edu.holycross.shot"
+version = '0.0.1'
+
+
+if (hasProperty('pub')) {
+    System.err.print "Using configuration data from ${pub}"
+    File confFile = new File(pub)
+    if (! confFile.exists()) {
+        throw new Exception("No publication configuration file ${pub} found.")
+    } else {
+        apply from: pub
+    }
+
+} else {
+    File confFile = new File("pub.gradle")
+    if (! confFile.exists()) {
+        throw new Exception("No publication configuration file ${confFile} found\
+.")
+    } else {
+        println "Using default configuration in 'pub.gradle'"
+        apply from: "pub.gradle"
+    }
+}
+
+
+repositories {
+    mavenCentral()
+}
+
+
+dependencies {
+  compile group: 'org.codehaus.groovy', name: 'groovy-all', version: groovyVersion
+
+  testCompile group: 'junit', name: 'junit', version: junitVersion
+
+  testCompile 'junit:junit:4.11'
+  //testCompile 'org.concordion:concordion:1.4.4'
+}
+
+
+task sourcesZip(type: Zip, dependsOn:classes) {
+     classifier = 'sources'
+     from sourceSets.main.allSource
+}
+
+task docsZip(type: Zip, dependsOn: groovydoc) {
+    classifier = 'groovydoc'
+    from groovydoc.destinationDir
+    description = 'Builds zip file of java/groovy docs'
+}
+
+
+artifacts {
+    archives docsZip
+    archives sourcesZip
+}
+
+uploadArchives {
+    repositories.mavenDeployer {
+        repository(url: nexusRepo) {                   
+            authentication (userName: nexusUser, password: nexusPassword)
+        }
+    }
+}
+
+
+/*
+
+// for specs with concordion:
+sourceSets {
+    main {
+        java {
+            srcDir 'src'
+        }
+        resources {
+            srcDir 'src'
+        }
+    }
+    test {
+        java {
+	  srcDir "specs/java"
+        }
+        resources {
+	  srcDir "${buildDir}/specs"
+        }
+    }
+}
+
+
+task cpResources(type: Copy) {
+  description "Copies specification resources into build area"
+  from "specs/resources"
+  into "${buildDir}/specs"
+}
+
+cpResources.doFirst {
+  println "\n\nAbout to run 'cpResources' task"
+}
+cpResources.doLast {
+  println "Copied resources into ${buildDir}/specs\n\n"
+}
+
+task setUpResources(dependsOn: [cpResources]) {
+  description "Converts specification markdown to HTML for concordion"
+}
+setUpResources.doFirst {
+  println "About to run 'setUpResources' task"
+}
+setUpResources.doLast {
+  println "READING FILE TREE FROM " + mdSrc
+  FileTree tree = fileTree(mdSrc) {
+    include "** / *.md"
+  }
+  tree.visit { f ->
+    if (f.relativePath.isFile()) {
+      File inFile = new File("${mdSrc}/${f.relativePath}")
+      println "Working on " + inFile
+      def segs = f.relativePath.getSegments()
+      String treePath = "${buildDir}/specs"
+      Integer limit =  segs.size() - 1
+      segs.eachWithIndex { s, i ->
+	if (i < limit) {
+	  treePath = "${treePath}/${s}"
+	  File nxtDir = new File(treePath)
+	  if (! nxtDir.exists()) {
+	    nxtDir.mkdir()
+	  }
+	}
+      }
+      File outDir = new File(treePath)
+      String htmlFileName = f.relativePath.getLastName().replaceFirst(/.md$/,".html")
+      File htmlFile = new File(outDir, htmlFileName)
+      println "Created ${htmlFile}"
+
+      String body = Processor.process(inFile.getText("UTF-8"),Configuration.DEFAULT)
+      htmlFile.setText("${htmlPreface}${body}${htmlEnd}", "UTF-8")
+    }
+  }
+}
+
+
+test.dependsOn setUpResources
+test {
+    systemProperties 'concordion.output.dir': file("${buildDir}/concordion-results")
+}
+test.doFirst {
+  println "About to run 'test' task"
+}
+
+task mapVersion() {
+}
+mapVersion.doLast {
+  tokenMap["version"] = version
+}
+
+task conc(type: Copy, dependsOn: [test, mapVersion]) {
+  from "${buildDir}/concordion-results"
+  into "${buildDir}/concordion-formatted"
+  filter(ReplaceTokens, tokens: tokenMap)
+}
+*/

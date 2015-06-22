@@ -1,0 +1,8 @@
+
+
+ext {
+    groovyVersion = '[2.0,)'
+    junitVersion = "4.11"
+}
+
+
