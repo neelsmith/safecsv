@@ -14,8 +14,13 @@ class TestBasic extends GroovyTestCase {
     String simplest = "  col1,col2,col3   "
     SafeCsvReader safecsv = new SafeCsvReader(new File("/dev/null"))
     assert safecsv.stripWhiteSpace(simplest) == "col1,col2,col3"
-    //ArrayList cols = SafeCsvReader.parseLine(simplest)
-    //assert cols.size() == 3
+  }
+
+  void testColumnParser() {
+    String simplest = "  col1,col2,col3   "
+    SafeCsvReader safecsv = new SafeCsvReader(new File("/dev/null"))
+    ArrayList cols = safecsv.parseLine(simplest)
+    assert cols.size() == 3
   }
 
   
