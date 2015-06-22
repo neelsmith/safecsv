@@ -7,7 +7,7 @@ permalink:        pretty
 
 # Setup
 title:            safecsv
-tagline:          'Read CSV files with any Unicode content'
+tagline:          'Safely read CSV files with any Unicode content'
 description:      'A JVM library for reading CSV files using Unicode code points rather than bytes or chars'
 baseurl: '/safecsv/'
 
