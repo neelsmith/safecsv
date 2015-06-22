@@ -77,12 +77,9 @@ class SafeCsvReader {
       if  (charAsStr == quotation) {
 	inQuoted = !inQuoted
 	
-	
       } else  if ((charAsStr == columnDelimiter) && (!inQuoted)) {
-	//if (columnValue.size() > 0) {
 	  valuesByColumn.add(columnValue.toString())
 	  columnValue.setLength(0)
-	  //}
 	
       } else {
 	columnValue.append(charAsStr)

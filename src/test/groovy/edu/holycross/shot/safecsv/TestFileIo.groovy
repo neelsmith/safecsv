@@ -10,11 +10,11 @@ import org.junit.Test
 class TestFileIo extends GroovyTestCase {
 
 
-  // 6 lines, each with 3 columns
-  File testFile = new File("testdata/test1.csv")
   
+  void testQuoted() {
+    // 6 lines, each with 3 columns
+    File testFile = new File("testdata/test1.csv")
   
-  void testQuotedComman() {
     SafeCsvReader safecsv = new SafeCsvReader(testFile)
     ArrayList csv = safecsv.readAll()
 
@@ -25,5 +25,22 @@ class TestFileIo extends GroovyTestCase {
       assert it.size() == expectedColumns
     }
   }
- 
+
+  void testFunnyGreek() {
+    // 1 line with 7 columns, including Unicode
+    // that breaks OpenCSVReader:
+    File greekFile = new File("testdata/greek.csv")
+    SafeCsvReader safecsv = new SafeCsvReader(greekFile)
+    ArrayList csv = safecsv.readAll()
+    Integer expectedRows = 1
+    assert csv.size() == expectedRows
+    Integer expectedColumns = 7
+    csv.each { c ->
+      println  c
+      assert c.size() == expectedColumns
+    }
+  }
+
+
+  
 }
