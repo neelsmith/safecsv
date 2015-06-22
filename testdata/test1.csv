@@ -1,0 +1,6 @@
+Column 1 header, Header for col 2, Third column
+  Trim white,middle,end
+Beginning,middle,trim trailing     
+No middle val,,End
+No end val,middle,
+,Skipped begin!,End

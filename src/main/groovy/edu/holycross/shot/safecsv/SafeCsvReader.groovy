@@ -54,14 +54,19 @@ class SafeCsvReader {
      }
      return stripped.toString()
   }
-  
-   ArrayList parseLine(String s) {
+
+
+  /** Parses a String delimited according to safecsv
+   * syntax into an ArrayList.
+   * @param s The String to parse.
+   * @returns An ordered list of Strings.
+   */
+  ArrayList parseLine(String s) {
     ArrayList valuesByColumn = []
 
-    
-
-    boolean inQuoted = false
     String ln = stripWhiteSpace(s)
+    
+    boolean inQuoted = false
     StringBuilder columnValue = new StringBuilder()
     int max = ln.codePointCount(0, ln.length() - 1)
      (0..max).each { idx ->
@@ -72,11 +77,12 @@ class SafeCsvReader {
       if  (charAsStr == quotation) {
 	inQuoted = !inQuoted
 	
+	
       } else  if ((charAsStr == columnDelimiter) && (!inQuoted)) {
-	if (columnValue.size() > 0) {
+	//if (columnValue.size() > 0) {
 	  valuesByColumn.add(columnValue.toString())
 	  columnValue.setLength(0)
-	}
+	  //}
 	
       } else {
 	columnValue.append(charAsStr)
