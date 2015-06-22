@@ -28,3 +28,4 @@ layout: page
 - concordion specifications
 - API docs
 - groovy source code prepackaged for download
+- user-specificiable Unicode encoding for file i/o
