@@ -1,0 +1,27 @@
+# Dependencies
+markdown:         redcarpet
+pygments:         true
+
+# Permalinks
+permalink:        pretty
+
+# Setup
+title:            safecsv
+tagline:          'Read CSV files with any Unicode content'
+description:      'A JVM library for reading CSV files using Unicode code points rather than bytes or chars'
+baseurl: '/safecsv/'
+
+
+author:
+  name:           'Neel Smith'
+ 
+
+links:
+  - title: Github source
+    url: https://github.com/neelsmith/safecsv
+    external: true
+  - title: Me on github
+    url: http://neelsmith.github.io/
+    external: true
+
+   
