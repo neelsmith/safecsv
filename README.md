@@ -1,6 +1,6 @@
 # safecsv
 
-A library  for reading CSV files without damaging content in Unicode characters beyond the basic multilingual plane.
+A JVM library  for reading CSV files without damaging content in Unicode characters beyond the basic multilingual plane.
 
 ## Why?
 
@@ -11,7 +11,7 @@ More information:  <http://neelsmith.github.io/safecsv/>
 
 ## Example usage
 
-This script in groovy reads a `.csv` file and prints the first column of every row:
+This script (in groovy) reads a `.csv` file and prints the first column of every row:
 
     import edu.holycross.shot.safecsv.SafeCsvReader
 
