@@ -13,9 +13,9 @@ More information:  <http://neelsmith.github.io/safecsv/>
 
 This script in groovy reads a `.csv` file and prints the first column of every row:
 
-   import edu.holycross.shot.safecsv.SafeCsvReader
-   
-   SafeCsvReader srcReader = new SafeCsvReader("CSVFILE")
-   srcReader.readAll().each { record ->
-    println("First column is " + record[0])
-   }
+    import edu.holycross.shot.safecsv.SafeCsvReader
+
+    SafeCsvReader srcReader = new SafeCsvReader("CSVFILE")
+    srcReader.readAll().each { record ->
+        println("First column is " + record[0])
+    }
