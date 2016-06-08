@@ -1,2 +1,3 @@
 # safecsv
-A library  for reading CSV files without damaging Unicode conetnt beyond the basic multilingual plane
+
+A library  for reading CSV files without damaging content in Unicode characters beyond the basic multilingual plane.
