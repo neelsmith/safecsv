@@ -2,30 +2,78 @@ package edu.holycross.shot.safecsv
 
 class SafeCsvReader {
 
-
+  /** Configurable string value for column delimiter.*/
   String columnDelimiter = ","
+  /** Configurable string value for quoting and turning of column delimiter.*/
   String quotation = '"'
-  
+
+  /** Delimited text file to read.*/
   File srcFile
-  
+
+  /** Whether or not to treat file as having a header */
+  boolean withHeader
+
+
+  /** Constructor assuming no header line.
+   * @param csv Delimited text file to read.
+   */
   SafeCsvReader(File csv) {
     srcFile = csv
+    withHeader = false
   }
 
 
-  
+  /** Constructor specifying whether or not to read a header line.
+   * @param csv Delimited text file to read.
+   * @param hasHeader True if csv file includes a header line 
+   * we should omit.
+   */
+  SafeCsvReader(File csv, boolean hasHeader) {
+    srcFile = csv
+    withHeader = hasHeader
+  }
+
+
+
+  /** Parses the first line csv file and return an array of
+   * of strings.
+   * @returens ArrayList of column values for header line. 
+   */
+  ArrayList readHeader() {
+    return parseLine(srcFile.readLines()[0])
+  }
+
+
+  /** Parses csv file and return a two-dimensional array list
+   * of lines correctly parsed into columns. If withHeader is
+   * true, omits the first ine of the file.
+   * @returns ArrayList of lines, each of which is an ArrayList
+   * of columns.
+   */
   ArrayList readAll() {
     ArrayList csvContent = []
-    srcFile.eachLine {
-      ArrayList oneLine = parseLine(it)
-      csvContent.add (oneLine)
+    boolean headerSeen = false
+    srcFile.eachLine { l ->
+      if (withHeader && headerSeen == false) {
+	// skip line
+	headerSeen = true
+      } else {
+	ArrayList oneLine = parseLine(l)
+	csvContent.add (oneLine)
+      }
     }
-
     return csvContent
   }
 
-  String stripWhiteSpace(s) {
 
+
+
+  /** Strips leading and trailing white space from a string without
+   * damaging Unicode characters outside the BMP.
+   * @param s String to trim.
+   * @returns A String with no leading or trailing white space.
+   */
+  String stripWhiteSpace(s) {
     boolean inContent = false
     
     String stripLeadingWhite = ""
@@ -56,8 +104,8 @@ class SafeCsvReader {
   }
 
 
-  /** Parses a String delimited according to safecsv
-   * syntax into an ArrayList.
+  /** Parses a String for a single record or line and
+   * delimited according to safecsv syntax into an ArrayList.
    * @param s The String to parse.
    * @returns An ordered list of Strings.
    */
