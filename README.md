@@ -9,7 +9,7 @@ Some widely used libraries for working with `.csv` files read arrays of bytes or
 More information:  <http://neelsmith.github.io/safecsv/>
 
 
-## Example usage
+## Example: basic usage
 
 This script (in groovy) reads a `.csv` file and prints the first column of every row:
 
@@ -18,4 +18,18 @@ This script (in groovy) reads a `.csv` file and prints the first column of every
     SafeCsvReader srcReader = new SafeCsvReader("CSVFILE")
     srcReader.readAll().each { record ->
         println("First column is " + record[0])
+    }
+
+
+## Example: delimited text file with header line
+
+This script (in groovy) reads a `.csv` file and prints the first column of every row labelled with the value from the corresponding header column:
+
+    import edu.holycross.shot.safecsv.SafeCsvReader
+
+    boolean hasHeader = true
+    SafeCsvReader srcReader = new SafeCsvReader("CSVFILE", true)
+    def headers = srcReader.readHeader()
+    srcReader.readAll().each { record ->
+        println("Column " + headers[0] + ": " + record[0])
     }
